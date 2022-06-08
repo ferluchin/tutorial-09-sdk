@@ -9,8 +9,7 @@ const firestore = getFirestore(firebaseApp);
 const storage = getStorage(firebaseApp);
 
 
-
-const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas }) => {
+const AgregarProyecto = ({ correoUsuario, setArrayProyectos, arrayProyectos }) => {
 
     let urlDescarga;
 
@@ -19,8 +18,8 @@ const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas }) => {
 
         const descripcion = e.target.formDescripcion.value;
         //crear nuevo array de tareas
-        const nvoArrayTareas = [
-            ...arrayTareas,
+        const nvoArrayProyectos = [
+            ...arrayProyectos,
             {
                 id: +new Date(),
                 descripcion: descripcion,
@@ -28,43 +27,47 @@ const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas }) => {
             }
         ];
         //actualizar base de datos
-        const docuRef = doc(firestore, `usuarios/${correoUsuario}`);
-        updateDoc(docuRef, { tareas: [...nvoArrayTareas] });
+        const docuRef = doc(firestore, `proyectos-investigacion/${correoUsuario}`);
+        updateDoc(docuRef, { proyectos: [...nvoArrayProyectos] });
 
         // actualizar el estado
-        setArrayTareas(nvoArrayTareas);
+        setArrayProyectos(nvoArrayProyectos);
 
         //limpiar formulario
         e.target.formDescripcion.value = "";
     }
 
-    async function fileHandler(e) {
-        //detectar archivo
+    /* async function fileHandler(e) {
+         //detectar archivo
         const archivoLocal = e.target.files[0];
         //cargarlo a firebase storage
         //const archivoRef = ref(storage, `${correoUsuario}/${archivoLocal.name}`);
         const archivoRef = ref(storage, `documentos/${archivoLocal.name}`);
         await uploadBytes(archivoRef, archivoLocal);
-        //obtener la url de descarga del archivo    
+         //obtener la url de descarga del archivo    
         urlDescarga = await getDownloadURL(archivoRef);
 
     }
+     */
     return (
+
         <Container>
+            <h4>Agregar Proyecto</h4>
             <Form onSubmit={addTask}>
                 <Row className='mb-5'>
                     <Col>
                         <Form.Control
                             type="text"
-                            placeholder="Describe tu tarea"
+                            placeholder="Describe tu proyecto"
                             id='formDescripcion'
                         />
                     </Col>
                     <Col>
                         <Form.Control
-                            type="file"
-                            placeholder="Añade Archivo"
-                            onChange={fileHandler}
+                            type="text"
+                            placeholder="Añade texto"
+                            //onChange={fileHandler}
+                            id= 'formTexto'
                         />
                     </Col>
 
@@ -82,4 +85,4 @@ const AgregarTarea = ({ correoUsuario, setArrayTareas, arrayTareas }) => {
     )
 }
 
-export default AgregarTarea
+export default AgregarProyecto

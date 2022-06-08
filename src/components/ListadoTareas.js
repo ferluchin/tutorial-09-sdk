@@ -21,7 +21,7 @@ const ListadoTareas = ({ arrayTareas, correoUsuario, setArrayTareas }) => {
         //actualizar base de datos
 
         const docRef = doc(firestore, `usuarios/${correoUsuario}`);
-        updateDoc(docRef, { tareas: nvoArrayTareas });
+        updateDoc(docRef, { tareas: [...nvoArrayTareas] });
         //        actualizar el estado
         setArrayTareas(nvoArrayTareas);
 
@@ -34,15 +34,26 @@ const ListadoTareas = ({ arrayTareas, correoUsuario, setArrayTareas }) => {
                 {arrayTareas.map((objetoTarea) => {
                     return (
                         <>
-                            <Row>
+                            <Row className='mb-5' >
                                 <Col>{objetoTarea.descripcion}</Col>
-                                <Col>
-                                    <Button>Ver Archivo</Button>
+                                <Col >
+                                    <a href={objetoTarea.url}>
+                                        <Button
+                                            variant="secondary"
+                                        >
+                                            Ver Archivo
+                                        </Button>
+                                    </a>
                                 </Col>
                                 <Col>
-                                    <Button onClick={() => eliminarTarea(objetoTarea.id)}>Eliminar Tarea</Button>
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => eliminarTarea(objetoTarea.id)}
+                                        
+                                    >
+                                        Eliminar Tarea
+                                    </Button>
                                 </Col>
-
                             </Row>
                             <hr />
                         </>
