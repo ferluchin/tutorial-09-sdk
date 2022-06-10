@@ -30,9 +30,43 @@ const Home = ({ correoUsuario }) => {
 
     const fakeData = [
         { id: 1, descripcion: 'Tarea 1', url: 'https://www.picsum.photos/420' },
-        { id: 2, descripcion: 'Tarea 2', url: 'https://www.picsum.photos/420' },
-        { id: 3, descripcion: 'Tarea 3', url: 'https://www.picsum.photos/420' },
     ]
+
+
+
+    async function buscarProyectoOrCrearProyecto(idDocumento) {
+        //crear referencia al documento
+        const docuRef = doc(firestore, `usuarios/${idDocumento}`);
+
+        //Buscar documento
+        const consulta = await getDoc(docuRef);
+
+        //revisar si existe
+        if (consulta.exists()) {
+            // si sí existe 
+            const infoDocu = consulta.data();
+            return infoDocu.proyectos;
+        } else {
+            // si no existe
+            await setDoc(docuRef, { tareas: [...fakeData] })
+            const consulta = await getDoc(docuRef);
+            const infoDocu = consulta.data();
+            //return infoDocu.proyectos;
+            return infoDocu.tareas;
+
+        }
+    }
+
+
+    useEffect(() => {
+        async function obtenerProyectos() {
+            const proyectosFetchadas = await buscarProyectoOrCrearProyecto(
+                correoUsuario
+            );
+            setArrayProyectos(proyectosFetchadas);
+        }
+        obtenerProyectos();
+    }, [])
 
     async function buscarDocumentoOrCrearDocumento(idDocumento) {
         //crear referencia al documento
@@ -57,28 +91,6 @@ const Home = ({ correoUsuario }) => {
         }
     }
 
-    async function buscarProyectoOrCrearProyecto(idDocumento) {
-        //crear referencia al documento
-        const docuRef = doc(firestore, `proyectos-investigacion/${idDocumento}`);
-
-        //Buscar documento
-        const consulta = await getDoc(docuRef);
-
-        //revisar si existe
-        if (consulta.exists()) {
-            // si sí existe 
-            const infoDocu = consulta.data();
-            return infoDocu.proyectos;
-        } else {
-            // si no existe
-            await setDoc(docuRef, { proyectos: [...fakeData] })
-            const consulta = await getDoc(docuRef);
-            const infoDocu = consulta.data();
-            return infoDocu.proyectos;
-
-        }
-    }
-
     useEffect(() => {
         async function obtenerTareas() {
             const tareasFetchadas = await buscarDocumentoOrCrearDocumento(
@@ -87,16 +99,6 @@ const Home = ({ correoUsuario }) => {
             setArrayTareas(tareasFetchadas);
         }
         obtenerTareas();
-    }, [])
-
-    useEffect(() => {
-        async function obtenerProyectos() {
-            const proyectosFetchadas = await buscarProyectoOrCrearProyecto(
-                correoUsuario
-            );
-            setArrayProyectos(proyectosFetchadas);
-        }
-        obtenerProyectos();
     }, [])
 
     return (
@@ -118,8 +120,9 @@ const Home = ({ correoUsuario }) => {
                 correoUsuario={correoUsuario}
 
             />
-            
+            {console.log (arrayProyectos)}
             {
+
                 arrayProyectos ?
                     <ListadoProyectos
                         arrayProyectos={arrayProyectos}
@@ -130,21 +133,25 @@ const Home = ({ correoUsuario }) => {
                     : null
             }
             <hr />
+
             <AgregarTarea
                 arrayTareas={arrayTareas}
                 setArrayTareas={setArrayTareas}
                 correoUsuario={correoUsuario}
 
             />
-            {
-                arrayTareas ?
-                    <ListadoTareas
-                        arrayTareas={arrayTareas}
-                        setArrayTareas={setArrayTareas}
-                        correoUsuario={correoUsuario}
 
-                    />
-                    : null
+            {console.log(arrayTareas)}
+            {
+                
+                arrayTareas ?
+            <ListadoTareas
+                arrayTareas={arrayTareas}
+                setArrayTareas={setArrayTareas}
+                correoUsuario={correoUsuario}
+
+            />
+            : null
             }
         </Container>
     )

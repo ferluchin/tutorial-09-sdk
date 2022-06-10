@@ -28,6 +28,7 @@ const ListadoTareas = ({ arrayTareas, correoUsuario, setArrayTareas }) => {
     }
 
     return (
+
         <Container>
             <Stack>
 
@@ -35,7 +36,10 @@ const ListadoTareas = ({ arrayTareas, correoUsuario, setArrayTareas }) => {
                     return (
                         <>
                             <Row className='mb-5' >
-                                <Col>{objetoTarea.descripcion}</Col>
+                                <Col>
+                                    {objetoTarea.descripcion}
+                                </Col>
+                                
                                 <Col >
                                     <a href={objetoTarea.url}>
                                         <Button
@@ -58,7 +62,8 @@ const ListadoTareas = ({ arrayTareas, correoUsuario, setArrayTareas }) => {
                             <hr />
                         </>
                     )
-                })}
+                }
+                )}
 
             </Stack>
         </Container>

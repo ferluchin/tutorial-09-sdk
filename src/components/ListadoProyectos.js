@@ -14,12 +14,15 @@ const ListadoProyectos = ({ arrayProyectos, correoUsuario, setArrayProyectos }) 
 
     async function eliminarProyecto(idProyectoEliminar) {
         //crear nuevo array de proyectos
+
         const nvoArrayProyectos = arrayProyectos.filter(
             objetoProyecto => objetoProyecto.id !== idProyectoEliminar
         );
         //actualizar base de datos
-        const docRef = doc(firestore, `proyectos-investigacion/${correoUsuario}`);
-        updateDoc(docRef, { proyectos: [...nvoArrayProyectos] });
+        //const docRef = doc(firestore, `proyectos-investigacion/${correoUsuario}`);
+        //updateDoc(docRef, { proyectos: [...nvoArrayProyectos] });
+        const docRef = doc(firestore, `usuarios/${correoUsuario}`);
+        updateDoc(docRef, { tareas: [...nvoArrayProyectos] });
         //        actualizar el estado
         setArrayProyectos(nvoArrayProyectos);
 
@@ -37,12 +40,15 @@ const ListadoProyectos = ({ arrayProyectos, correoUsuario, setArrayProyectos }) 
                         return (
                             <>
                                 <Row className='mb-5' >
-                                    <Col >
+                                    <Col>
                                         {objetoProyecto.descripcion}
+                                        
+                                        {console.log("🚀 ~ file: ListadoProyectos.js ~ line 45 ~ arrayProyectos.map ~ objetoProyecto.descripcion", objetoProyecto.descripcion)}
                                     </Col>
 
                                     <Col >
                                         <a href={objetoProyecto.url}>
+                                            {console.log("🚀 ~ file: ListadoProyectos.js ~ line 50 ~ arrayProyectos.map ~ objetoProyecto.url", objetoProyecto.url)}
                                             <Button
                                                 variant="secondary"
                                             >
@@ -60,11 +66,11 @@ const ListadoProyectos = ({ arrayProyectos, correoUsuario, setArrayProyectos }) 
                                         </Button>
                                     </Col>
                                 </Row>
+                                <hr />
                             </>
                         )
                     }
                     )}
-
             </Stack>
         </Container>
     )

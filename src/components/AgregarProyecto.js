@@ -28,7 +28,7 @@ const AgregarProyecto = ({ correoUsuario, setArrayProyectos, arrayProyectos }) =
         ];
         //actualizar base de datos
         const docuRef = doc(firestore, `proyectos-investigacion/${correoUsuario}`);
-        updateDoc(docuRef, { proyectos: [...nvoArrayProyectos] });
+        updateDoc(docuRef, { tareas: [...nvoArrayProyectos] });
 
         // actualizar el estado
         setArrayProyectos(nvoArrayProyectos);
@@ -67,7 +67,7 @@ const AgregarProyecto = ({ correoUsuario, setArrayProyectos, arrayProyectos }) =
                             type="text"
                             placeholder="Añade texto"
                             //onChange={fileHandler}
-                            id= 'formTexto'
+                        
                         />
                     </Col>
 
